@@ -257,6 +257,67 @@ Deciding which part of the cache to remove when full:
     - **CDNs** for global delivery.
     - **LRU Cache** for frequent content access.
 
+## Design Google Drive
+- **File System (HDFS) vs Object Storage:**
+  - File system is well organized but scaling is harder.
+  - Object store can easily scale but files cannot be edited like in a file system.
+  - Object stores hold data in a flat data structure.
+- **Block-level Storage:**
+  - The file is broken up into blocks like 4MB chunks.
+  - If duplicate blocks exist, only one instance is stored (deduplication).
+  - Useful for cases like resuming file uploads.
+- **Optimizations:**
+  - Garbage collection service checks KV store for unreferenced IDs and deletes them from object storage.
+- **Heartbeat Mechanism:**
+  - Load Balancer status can be checked using heartbeat signals (e.g., via Zookeeper).
+
+## Design Google Maps
+- **GeoCoding**
+- **Spatial Indexing:** Quadtrees, Geohashing.
+- **Hexagon-Based Indexing:** Check Uber’s article about H3: [Uber Blog](https://www.uber.com/en-TR/blog/h3/)
+
+## Design Key-Value Store
+- **Requirements:**
+  - Must be durable, handle isolation, and resolve conflicts.
+  - Must be scalable (Replication and Sharding).
+- **High-Level Design:**
+  - **Indexing Data:** B-Trees, B+ Trees, or LSM Trees.
+  - **Replication:** Helps with scaling and fault tolerance.
+  - **Partitioning:** Horizontal partitioning distributes data across nodes.
+  - **Node Failure Handling:** Recovery strategies must be in place.
+  - **Concurrent Writes:** Ensuring isolation.
+- **LSM Tree (Log-Structured Merge Tree, used in Cassandra):**
+  - Writes are batched in memory (memtable).
+  - Periodically written to SSTable (Sorted Strings Table).
+- **Quorum Mechanism:**
+  - Two types: Write quorum and Read quorum.
+- **Partitioning & Node Failure Handling:**
+  - **Vnodes (Virtual Nodes):** Data distributed using consistent hashing.
+  - If a node fails, the nearest clockwise node takes over its data.
+  - Node failures detected via Zookeeper or Gossip Protocol (nodes exchange heartbeat messages).
+- **Concurrent Writes Handling:**
+  - **LWW (Last Write Wins):** Used in Cassandra.
+  - **Dynamo Vector Clocks:** Maintains a version like `[node, version]`.
+
+## Design Distributed Message Queue
+- **PUB/SUB Model:**
+  - Publisher sends messages to subscribers via topics (Producer-Consumer pattern).
+- **Functional Requirements:**
+  - Fanout capability.
+  - Messages retained until delivery.
+  - At-least-once delivery guarantee.
+- **Non-functional Requirements:**
+  - Scalability.
+  - Persistent storage.
+  - High throughput.
+- **High-Level Design:**
+  - **Publish Forwarders & Subscriber Forwarders:** Manage message routing.
+  - **Persistent Storage:** Messages stored in a database.
+  - **Database Sharding:** Data is partitioned by topic.
+  - **Metadata Database:** Stores topic and subscription information.
+  - **Acknowledgment Mechanism:** Receiver sends ACK to inform sender.
+  - **Replication:** Message databases are replicated to prevent data loss.
+
 ## OOP
 
 ### Abstract Class
