@@ -318,6 +318,57 @@ Deciding which part of the cache to remove when full:
   - **Acknowledgment Mechanism:** Receiver sends ACK to inform sender.
   - **Replication:** Message databases are replicated to prevent data loss.
 
+## Design Patterns
+
+### [Software Design Patterns - GeeksforGeeks](https://www.geeksforgeeks.org/software-design-patterns/)
+
+---
+
+## Creational Patterns
+
+### Factory Method
+Factory Method abstracts object creation details. Instead of a simple factory with multiple `if` or `switch` statements (which violates the Open/Closed Principle), the Factory Method is typically implemented using an interface or an abstract class. It includes a separate creator class, such as `CheeseBurgerCreator` or `DeluxeBurgerCreator` in a burger application.
+
+### Singleton
+The Singleton pattern ensures that only one instance of a class exists, sharing the same state. A well-known example is Redux, which uses the Singleton pattern. However, Singleton can sometimes be considered an anti-pattern due to its rigidity.
+
+### Builder
+The Builder pattern constructs an object step by step, providing flexibility in object creation. The `.build()` method is the final step, assembling the configured object. This is useful when an object requires multiple optional components, such as a meal with a drink, dessert, and main course.
+
+### Prototype
+The Prototype pattern involves creating new object instances by cloning an existing one using a `.clone()` method. This approach ensures that each client receives a fresh instance. Fields should be deep-copied to avoid unintended shared references. In Spring Boot, developers can choose between singleton and prototype scopes.
+
+---
+
+## Structural Patterns
+
+### Adapter
+The Adapter pattern enables compatibility between classes that have different interfaces. It often involves wrapper classes that transform one interface into another.
+
+### Decorator
+The Decorator pattern is used to dynamically alter or extend an object's behavior without modifying its structure. It prevents classes from becoming monolithic (god classes) and promotes composition over inheritance.
+
+### Facade
+The Facade pattern provides a simplified interface to a complex system by grouping functionalities. For example, a `SmartHomeFacade` class could offer predefined modes like "Movie Mode" and "Focus Mode" instead of requiring users to set brightness, temperature, and other parameters individually.
+
+---
+
+## Behavioral Patterns
+
+### Strategy
+The Strategy pattern defines a family of algorithms that can be selected at runtime. This promotes:
+- Encapsulation of different behaviors into separate strategy classes.
+- Dynamic behavior switching without modifying client code.
+- Improved modularity by delegating execution to strategy objects.
+
+### Observer
+The Observer pattern facilitates notification-based systems. Observers subscribe to changes in a subject and receive updates automatically. A real-world example is a pub-sub system or a YouTube notification bell, where subscribers receive updates when new content is published.
+
+### State
+State pattern is used for state machines, reducing complex conditional logic by encapsulating state-specific behaviors in separate classes. For example, in a traffic light system, separate classes (`GreenState`, `YellowState`, `RedState`) manage transitions based on the previous state, avoiding excessive `if-else` statements.
+
+---
+
 ## OOP
 
 ### Abstract Class
